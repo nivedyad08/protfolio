@@ -428,7 +428,7 @@
 		</div>
 	</div>
 	<a href="#home" id="toTop" aria-label="top" style="display: block;"> <span id="toTopHover" class="toTopHover"> </span></a>
-
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		// Defining a function to display error message
 		function printError(elemId, hintMsg) {
@@ -502,10 +502,13 @@
 				xhr.onreadystatechange = function() {
 					if (xhr.readyState == XMLHttpRequest.DONE) {
 						form.reset(); //reset form after AJAX success.
+						Swal.fire(
+							'Success!',
+							'Will contact you soon',
+							'success'
+						);
 					}
 				}
-				document.getElementById("alert_placeholder").innerHTML +=
-				'<div class="alert alert-success mt-4" role="alert">Success! Will contact you soon</div>';
 				//Dont submit the form.
 				return false; 
 			}else{
