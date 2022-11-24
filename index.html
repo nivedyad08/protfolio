@@ -340,7 +340,7 @@
 							<p><b>Rechargio</b> is the leading global provider of International Mobile Airtime Remittance.Objective is to provide features 
 								like Prepaid Bills,Postapid Bills, Bharat Bill Payment System,DTH , Data Card etc.</p>
 							<p><b>Qukpay</b> is a platform to sell your products and services as digital  eVouchers  and/or physical gift cards, vouchers,international calling cards etc</p>
-							<a href="#" class="read hvr-shutter-in-horizontal">Read More</a>
+							<!-- <a href="#" class="read hvr-shutter-in-horizontal">Read More</a> -->
 						</div>
 		
 						<div class="clearfix"></div>
@@ -353,7 +353,7 @@
 							<p><b>BROTOTYPE</b> Brototype is Kerala's #1 tech YouTube channel for students looking to frame a good career in the tech industry. Our mission is to make a positive change in the lives of people by 
 								providing them with valuable information and actionable steps.</p>
 							<p><b>JACK WITKINS</b>Jack Witkins is Meticulous and ambitious brand and website design for visionary founders.</p>
-							<a href="#" class="read hvr-shutter-in-horizontal">Read More</a>
+							<!-- <a href="#" class="read hvr-shutter-in-horizontal">Read More</a> -->
 						</div>
 		
 						<div class="clearfix"></div>
@@ -402,20 +402,24 @@
 						<div class="clearfix"> </div>
 					</div>
 					<div class="col-md-6 mail_right">
-						<form method="post" id="frmSubmit" name="myForm">
-							<input type="text"  name="name" id="name" placeholder="Name" required>
-							<input type="email"  name="email" placeholder="Email Address" required>
-							<input type="text"  name="mobile" placeholder="Mobile" required>
-							<textarea name="message" type="text" placeholder="Message"  required=""></textarea>
-							<button type="submit" class="btn btn-success" id="btnSubmit">Submit</button>
-		 					<div id="msg"></div>
+						<form method="post" id="frmSubmit" onsubmit="return validateForm()" name="contactForm">
+							<input type="text"  name="name" id="name" placeholder="Name" >
+							<span class="error" id="nameErr"></span>
+							<input type="text" name="email" id="email" placeholder="Email Address" >
+							<span class="error" id="emailErr"></span>
+							<input type="text"  name="mobile" id="mobile" placeholder="Mobile" >
+							<span class="error" id="mobileErr"></span>
+							<textarea name="message" id="message" type="text" placeholder="Message"  ></textarea>
+							<span class="error" id="messageErr"></span><br>
+							<input type ="submit" value="Submit"/>
+							<div id = "alert_placeholder"></div>
 						</form>
 					</div>
 					<div class="clearfix"></div>
 				</div>
 				<div class="copy_right text-center">
 					<ul class="social-icons-new two">
-						<li><a href="https://www.facebook.com/photo/?fbid=2693711873979690&set=a.836890646328498" aria-label="facebook" target="_blank"><i class="bi bi-facebook"></i></a></li>
+						<li><a href="https://www.facebook.com/nivedya.divakaran" aria-label="facebook" target="_blank"><i class="bi bi-facebook"></i></a></li>
 						<li><a href="https://www.linkedin.com/in/nivedya-divakaran-510245120" target="_blank" aria-label="linkedin" class="dott"><i class="bi bi-linkedin"></i> </a></li>
 						<li><a href="https://github.com/nivedyad08" aria-label="github" target="_blank"><i class="bi bi-github"></i></a></li>
 					</ul>
@@ -425,60 +429,91 @@
 	</div>
 	<a href="#home" id="toTop" aria-label="top" style="display: block;"> <span id="toTopHover" class="toTopHover"> </span></a>
 
-	
-	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 	<script>
-		$("form[name='myForm']").validate({
-        rules: {
-            name : {
-              required      : true,
-            },
-			email : {
-              required      : true,
-			  email 		: true
-            },
-			mobile : {
-              required      : true,
-            },
-			message : {
-              required      : true,
-            },
-        },
-        messages: {
-            name       : "This field is required.",
-        },
-        submitHandler: function(form) {
-		  jQuery('#msg').html('Please wait...');
-		  jQuery('#btnSubmit').attr('disabled',true);
-		  jQuery.ajax({
-			  url:'https://script.google.com/macros/s/AKfycbzdzu-sJdqGAXau_EsIDvLIXTajoFj9Ez5p-u4JtEHAqFILcGmXN8ZR6MYCyPvlEYfO/exec',
-			  type:'post',
-			  data:jQuery('#frmSubmit').serialize(),
-			  success:function(result){
-				console.log(result.result);
-				if(result.result =='success'){
-					Swal.fire(
-						'Success!',
-						'Will contact you soon',
-						'success'
-					);
-			  }else{
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: 'Something went wrong!',
-					})
-			  	}
-				jQuery('#frmSubmit')[0].reset();
-				jQuery('#msg').html('Thank You');
-				jQuery('#btnSubmit').attr('disabled',false);
-			  }
-		  });
-        }
-    });
-		
+		// Defining a function to display error message
+		function printError(elemId, hintMsg) {
+			document.getElementById(elemId).innerHTML = hintMsg;
+		}
+		// Defining a function to validate form 
+		function validateForm() {
+			//Retrieving the values of form elements 
+			var name = document.contactForm.name.value;
+			var email = document.contactForm.email.value;
+			var mobile = document.contactForm.mobile.value;
+			var message = document.contactForm.message.value;
+			// Defining error variables with a default value
+			var nameErr = emailErr = mobileErr = messageErr = true;
+			
+			// Validate name
+			if(name == "") {
+				printError("nameErr", "Please enter your name");
+			} else {
+				var regex = /^[a-zA-Z\s]+$/;                
+				if(regex.test(name) === false) {
+					printError("nameErr", "Please enter a valid name");
+				} else {
+					printError("nameErr", "");
+					nameErr = false;
+				}
+			}
+			// Validate email address
+			if(email == "") {
+				printError("emailErr", "Please enter your email address");
+			} else {
+				// Regular expression for basic email validation
+				var regex = /^\S+@\S+\.\S+$/;
+				if(regex.test(email) === false) {
+					printError("emailErr", "Please enter a valid email address");
+				} else{
+					printError("emailErr", "");
+					emailErr = false;
+				}
+			}
+			// Validate mobile number
+			if(mobile == "") {
+				printError("mobileErr", "Please enter your mobile number");
+			} else {
+				var regex = /^[1-9]\d{9}$/;
+				if(regex.test(mobile) === false) {
+					printError("mobileErr", "Please enter a valid 10 digit mobile number");
+				} else{
+					printError("mobileErr", "");
+					mobileErr = false;
+				}
+			}
+			if(message == "") {
+				printError("messageErr", "Please enter the message");
+			}else{
+				printError("messageErr", "");
+				messageErr = false;
+			}
+			// Prevent the form from being submitted if there are any errors
+			if((nameErr || emailErr || mobileErr || messageErr) != true) {
+				var form = document.getElementById('frmSubmit');
+				var xhr = new XMLHttpRequest();
+				var data = new FormData(form);
+				console.log(data);
+				//Add extra data to form before submission.
+				// data.append("referer","https://example.com");
+				//open the request
+				xhr.open('POST','https://script.google.com/macros/s/AKfycbzdzu-sJdqGAXau_EsIDvLIXTajoFj9Ez5p-u4JtEHAqFILcGmXN8ZR6MYCyPvlEYfO/exec')
+				//send the form data
+				xhr.send(data);
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == XMLHttpRequest.DONE) {
+						form.reset(); //reset form after AJAX success.
+					}
+				}
+				document.getElementById("alert_placeholder").innerHTML +=
+				'<div class="alert alert-success mt-4" role="alert">Success! Will contact you soon</div>';
+				//Dont submit the form.
+				return false; 
+			}else{
+				return false;
+			}
+		}
 	</script>
+	
 	</body>
 </html>
 

@@ -2018,3 +2018,13 @@ span.border.two:after {
     color: #00a98f;
     font-size: 2rem;
 }
+.mail_right input[type="text"]{
+	margin-bottom: 12px;
+	margin-top: 10px;
+}
+.error{
+	color: red;
+}
+#alert_placeholder{
+	margin-top: 16px;
+}
